@@ -33,7 +33,7 @@
 $username = 'demo';
 $password = 'demo';
 $host = 'localhost:3306';
-$dbname = 'test';
+$dbname = 'cs4750_project';
 $dsn = "mysql:host=$host;dbname=$dbname";  
 ////////////////////////////////////////////
 
