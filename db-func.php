@@ -2,65 +2,80 @@
 
 // ================================================== SELECT ==================================================
 
-function searchSongByName() {
+// Searching songs by song name
+function searchSongByName($name) {
 
 }
 
-function searchSongsByNameAndArtist() {
+// Searching songs by artist name and song name
+function searchSongsByNameAndArtist($aName, $sName) {
 
 }
 
-function searchArtistByName() {
+// Searching Artists by name
+function searchArtistByName($name) {
 
 }
 
-function searchAlbumByNameAndArtist() {
+// Searching Albums by album name and artist name
+function searchAlbumByNameAndArtist($album, $artist) {
 
 }
 
-function displayRatings() {
+// Displaying the ratings on a song
+function displayRatings($id) {
 
 }
 
-function getSongAvgRating() {
+// Get a song’s average rating
+function getSongAvgRating($id) {
 
 }
 
+// Get average song rating for each artist
 function getArtistsAvgRating() {
 
 }
 
+// Get average song rating for each album
 function getAlbumsAvgRating() {
 
 }
 
-function searchAlbumBySong() {
+// Get all albums that a song is on given songID
+function searchAlbumBySong($sid) {
 
 }
 
-function songDetails() {
+// Get details of a song
+function songDetails($id) {
 
 }
 
-function getUserData() {
+// Get User Data
+function getUserData($id) {
 
 }
 
-function getUsersRatings() {
+// Get all of a given user’s ratings
+function getUsersRatings($id) {
 
 }
 
 // ================================================== ADD ==================================================
 
-function addRating() {
+// Add rating given ratingID, songID, userID, and rating information
+function addRating($rid, $sid, $uid, $rhythm, $melody, $atmosphere, $general, $desc) {
 
 }
 
-function addUser() {
+// Add User
+function addUser($uid, $name, $email, $date) {
 
 }
 
-function addSong() {
+// Add Song given id, duration, songName, artistID, and albumID
+function addSong($id, $dur, $name, $artid, $albid ) {
 
 }
 
@@ -68,29 +83,35 @@ function addSong() {
 
 // ================================================== UPDATE ==================================================
 
-function editRating() {
+// Edit Rating
+function editRating($rid, $rhythm, $melody, $atmosphere, $general, $desc) {
 
 }
 
-function editSongAvgRating() {
+// Edit average rating for a song given songID
+function editSongAvgRating($id, $rating) {
 
 }
 
-function editArtistAvgRating() {
+// Edit average rating for an artist given artistID
+function editArtistAvgRating($id, $rating) {
 
 }
 
-function editAlbumAvgRating() {
+// Edit average rating for an album given albumID
+function editAlbumAvgRating($id, $rating) {
 
 }
 
 // ================================================== DELETE ==================================================
 
-function deleteRating() {
+// Delete Rating given ratingID
+function deleteRating($id) {
 
 }
 
-function deleteUser() {
+// Delete User given userID
+function deleteUser($id) {
 
 }
 ?>
