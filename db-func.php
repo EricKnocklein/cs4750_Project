@@ -231,17 +231,58 @@ function getUsersRatings($id) {
 
 // Add rating given ratingID, songID, userID, and rating information
 function addRating($rid, $sid, $uid, $rhythm, $melody, $atmosphere, $general, $desc) {
+    global $db
 
+    $query = 'INSERT INTO ratings(id, rhythm, melody, atmosphere, generalRating, description)
+    VALUES (:rid, :rhythm, :melody, :atmosphere, :general, :desc);
+    INSERT INTO rated(ratingID, songID) VALUES (:rid, :sid);
+    INSERT INTO submits(userID, ratingID) VALUES (:uid, :rid);'
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':rid', $rid);
+    $statement->bindValue(':sid', $isd);
+    $statement->bindValue(':uid', $uid);
+    $statement->bindValue(':rhythm', $rhythm);
+    $statement->bindValue(':melody', $melody);
+    $statement->bindValue(':atmosphere', $atmosphere);
+    $statement->bindValue(':general', $general);
+    $statement->bindValue(':desc', $desc);
+    $statement->execute();
+    $statement->closeCursor();
 }
 
 // Add User
 function addUser($uid, $name, $email, $date) {
+    global $db
 
+    $query = 'INSERT INTO idToUsername(id, userName) VALUES (:uid, :name);
+    INSERT INTO idToInfo(id, email, dateJoined) VALUES (:uid, :email, :date);'
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':uid', $uid);
+    $statement->bindValue(':name', $name);
+    $statement->bindValue(':email', $email);
+    $statement->bindValue(':date', $date);
+    $statement->execute();
+    $statement->closeCursor();
 }
 
 // Add Song given id, duration, songName, artistID, and albumID
 function addSong($id, $dur, $name, $artid, $albid ) {
+    global $db
 
+    $query = 'INSERT INTO songs(id, duration,avgRating, songName) VALUES (:id, :dur, NULL, :name );
+    INSERT INTO songReleasedBy(songID, artistID) VALUES (:id, :artid);
+    INSERT INTO onAlbum(songID, albumID) VALUES (:id, :albid);'
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->bindValue(':dur', $dur);
+    $statement->bindValue(':name', $name);
+    $statement->bindValue(':artid', $artid);
+    $statement->bindValue(':albid', $albid);
+    $statement->execute();
+    $statement->closeCursor();
 }
 
 // Add artist and album left up to the admin for now
@@ -249,34 +290,88 @@ function addSong($id, $dur, $name, $artid, $albid ) {
 // ================================================== UPDATE ==================================================
 
 // Edit Rating
-function editRating($rid, $rhythm, $melody, $atmosphere, $general, $desc) {
+function editRating($id, $rhythm, $melody, $atmosphere, $general, $desc) {
+    global $db
 
+    $query = 'UPDATE ratings SET rhythm=:rhythm, melody=:melody, atmosphere=:atmosphere, generalRating=:general, description=:desc
+    WHERE id=:id'
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->bindValue(':rhythm', $rhythm);
+    $statement->bindValue(':melody', $melody);
+    $statement->bindValue(':atmosphere', $atmosphere);
+    $statement->bindValue(':general', $general);
+    $statement->bindValue(':desc', $desc);
+    $statement->execute();
+    $statement->closeCursor();
 }
 
 // Edit average rating for a song given songID
 function editSongAvgRating($id, $rating) {
+    global $db
 
+    $query = 'UPDATE songs SET avgRating = :rating WHERE id = :id'
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->bindValue(':rating', $rating);
+    $statement->execute();
+    $statement->closeCursor();
 }
 
 // Edit average rating for an artist given artistID
 function editArtistAvgRating($id, $rating) {
+    global $db
 
+    $query = 'UPDATE artist SET avgSongRating = :rating WHERE id = :id'
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->bindValue(':rating', $rating);
+    $statement->execute();
+    $statement->closeCursor();
 }
 
 // Edit average rating for an album given albumID
 function editAlbumAvgRating($id, $rating) {
+    global $db
 
+    $query = 'UPDATE album SET avgSongRating = :rating WHERE id = :id'
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->bindValue(':rating', $rating);
+    $statement->execute();
+    $statement->closeCursor();
 }
 
 // ================================================== DELETE ==================================================
 
 // Delete Rating given ratingID
 function deleteRating($id) {
+    global $db
 
+    $query = 'DELETE FROM ratings WHERE id = :id;
+    DELETE FROM rated WHERE ratingID = :id;
+    DELETE FROM submits WHERE ratingID = :id;'
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    $statement->closeCursor();
 }
 
 // Delete User given userID
 function deleteUser($id) {
+    global $db
 
+    $query = 'DELETE FROM idToUsername WHERE id = :id;
+    DELETE FROM idToInfo WHERE id = :id;'
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    $statement->closeCursor();
 }
 ?>
