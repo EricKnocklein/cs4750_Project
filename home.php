@@ -2,7 +2,9 @@
 require("connect-db.php");      // include("connect-db.php");
 require("db-func.php");
 
-//put variables we need here    
+//put variables we need here 
+$uid = 1; // temp
+$list_of_ratings = getUserRatings($uid); 
 ?>
 
 <?php
