@@ -43,8 +43,20 @@ $list_of_ratings = getUserRatings($uid);
 
 <body>
 <?php include('header.html') ?> 
-
-<!-- Put all the actual stuff in here -->
+<?php foreach ($list_of_ratings as $rating): ?>
+  <tr>
+     <td><?php echo $friend_info['idToUsername.userName']; ?></td>
+     <td><?php echo $friend_info['ratings.rhythm']; ?></td>        
+     <td><?php echo $friend_info['ratings.melody']; ?></td>
+     <td><?php echo $friend_info['ratings.atmosphere']; ?></td>  
+     <td><?php echo $friend_info['ratings.generalRating']; ?></td>  
+     <td><?php echo $friend_info['ratings.description']; ?></td>  
+     <td><?php echo $friend_info['songs.songName']; ?></td>  
+     <td><?php echo $friend_info['songs.duration']; ?></td>  
+     <td><?php echo $friend_info['songs.avgRating']; ?></td>  
+     <td><?php echo $friend_info['artists.artistName']; ?></td>                  
+  </tr>
+<?php endforeach; ?>
 
 <?php include('footer.html') ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
