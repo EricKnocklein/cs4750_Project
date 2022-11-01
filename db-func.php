@@ -231,7 +231,7 @@ function getUsersRatings($id) {
 function getTopSongs() {
     global $db
 
-    $query = 'SELECT songs.songName, songs.avgRating, songs.duration, artists.artistName
+    $query = 'SELECT songs.songName as songName, songs.avgRating as avgRating, songs.duration as duration, artists.artistName as artist
     FROM songs, songReleasedBy, artists
     WHERE songs.id = songReleasedBy.songID
     AND songReleasedBy.artistID = artists.id

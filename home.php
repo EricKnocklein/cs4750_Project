@@ -5,6 +5,7 @@ require("db-func.php");
 //put variables we need here 
 $uid = 1; // temp
 $list_of_ratings = getUserRatings($uid); 
+$top_songs = getTopSongs();
 ?>
 
 <?php
@@ -55,6 +56,15 @@ $list_of_ratings = getUserRatings($uid);
      <td><?php echo $friend_info['songs.duration']; ?></td>  
      <td><?php echo $friend_info['songs.avgRating']; ?></td>  
      <td><?php echo $friend_info['artists.artistName']; ?></td>                  
+  </tr>
+<?php endforeach; ?>
+
+<?php foreach ($top_songs as $song): ?>
+  <tr>
+     <td><?php echo $friend_info['songName']; ?></td>
+     <td><?php echo $friend_info['avgRating']; ?></td>        
+     <td><?php echo $friend_info['duration']; ?></td>
+     <td><?php echo $friend_info['artist']; ?></td>                
   </tr>
 <?php endforeach; ?>
 
