@@ -1,10 +1,10 @@
 <?php
-require("connect-db.php");      // include("connect-db.php");
+require("connect-db.php");   
 require("db-func.php");
 
 //put variables we need here 
 $uid = 1; // temp
-$list_of_ratings = getUserRatings($uid); 
+$list_of_ratings = getUsersRatings($uid); 
 $top_songs = getTopSongs();
 ?>
 
@@ -44,29 +44,35 @@ $top_songs = getTopSongs();
 
 <body>
 <?php include('header.html') ?> 
-<?php foreach ($list_of_ratings as $rating): ?>
-  <tr>
-     <td><?php echo $friend_info['idToUsername.userName']; ?></td>
-     <td><?php echo $friend_info['ratings.rhythm']; ?></td>        
-     <td><?php echo $friend_info['ratings.melody']; ?></td>
-     <td><?php echo $friend_info['ratings.atmosphere']; ?></td>  
-     <td><?php echo $friend_info['ratings.generalRating']; ?></td>  
-     <td><?php echo $friend_info['ratings.description']; ?></td>  
-     <td><?php echo $friend_info['songs.songName']; ?></td>  
-     <td><?php echo $friend_info['songs.duration']; ?></td>  
-     <td><?php echo $friend_info['songs.avgRating']; ?></td>  
-     <td><?php echo $friend_info['artists.artistName']; ?></td>                  
-  </tr>
-<?php endforeach; ?>
+<h1>RATING TABLE</h1>
+<table>
+  <?php foreach ($list_of_ratings as $rating): ?>
+    <tr>
+      <td><?php echo $rating['idToUsername.userName']; ?></td>
+      <td><?php echo $rating['ratings.rhythm']; ?></td>        
+      <td><?php echo $rating['ratings.melody']; ?></td>
+      <td><?php echo $rating['ratings.atmosphere']; ?></td>  
+      <td><?php echo $rating['ratings.generalRating']; ?></td>  
+      <td><?php echo $rating['ratings.description']; ?></td>  
+      <td><?php echo $rating['songs.songName']; ?></td>  
+      <td><?php echo $rating['songs.duration']; ?></td>  
+      <td><?php echo $rating['songs.avgRating']; ?></td>  
+      <td><?php echo $rating['artists.artistName']; ?></td>                  
+    </tr>
+  <?php endforeach; ?>
+</table>
 
-<?php foreach ($top_songs as $song): ?>
-  <tr>
-     <td><?php echo $friend_info['songName']; ?></td>
-     <td><?php echo $friend_info['avgRating']; ?></td>        
-     <td><?php echo $friend_info['duration']; ?></td>
-     <td><?php echo $friend_info['artist']; ?></td>                
-  </tr>
-<?php endforeach; ?>
+<h1>SONG TABLE</h1>
+<table>
+  <?php foreach ($top_songs as $song): ?>
+    <tr>
+      <td><?php echo $song['songName']; ?></td>
+      <td><?php echo $song['avgRating']; ?></td>        
+      <td><?php echo $song['duration']; ?></td>
+      <td><?php echo $song['artist']; ?></td>                
+    </tr>
+  <?php endforeach; ?>
+</table>
 
 <?php include('footer.html') ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
