@@ -227,6 +227,23 @@ function getUsersRatings($id) {
     return $result;
 }
 
+// Get the most highly rated 5 (or so songs)
+function getTopSongs() {
+    global $db
+
+    $query = 'SELECT songs.songName, songs.avgRating, songs.duration, artists.artistName
+    FROM songs, songReleasedBy, artists
+    WHERE songs.id = songReleasedBy.songID
+    AND songReleasedBy.artistID = artists.id
+    ORDER BY songs.avgRating DESC
+    LIMIT 5'
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result;
+}
 // ================================================== ADD ==================================================
 
 // Add rating given ratingID, songID, userID, and rating information
