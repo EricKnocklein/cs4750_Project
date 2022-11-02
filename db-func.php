@@ -27,8 +27,8 @@ function searchSongsByNameAndArtist($aName, $sName) {
 
     $query = 'SELECT songs.songName, artists.artistName, songs.avgRating 
     FROM songs, songreleasedby, artists
-    WHERE songName LIKE "%:sName%"
-    AND artistName LIKE "%:aName%"
+    WHERE songName LIKE CONCAT("%", :sName, "%")
+    AND artistName LIKE CONCAT("%", :aName, "%")
     AND songs.id = songreleasedby.songID
     AND songreleasedby.artistID = artists.id';
 
@@ -48,7 +48,7 @@ function searchArtistByName($name) {
 
     $query = 'SELECT artistName, avgSongRating 
     FROM artists	
-    WHERE artistName LIKE "%:name%"
+    WHERE artistName LIKE CONCAT("%", :name, "%"
     ORDER BY avgSongRating DESC';
 
     $statement = $db->prepare($query);
@@ -66,8 +66,8 @@ function searchAlbumByNameAndArtist($album, $artist) {
 
     $query = 'SELECT albums.albumName, artists.artistName, albums.avgSongRating, albums.releaseDate 
     FROM albums, artists, albumReleasedBy
-    WHERE albums.albumName LIKE "%:album%"
-    AND artists.artistName LIKE "%:artist%"
+    WHERE albums.albumName LIKE CONCAT("%", :album, "%")
+    AND artists.artistName LIKE CONCAT("%", :artist, "%")
     AND albums.id = albumReleasedBy.albumID
     AND artists.id = albumReleasedBY.artistID
     ORDER BY albums.avgSongRating DESC';
