@@ -44,8 +44,20 @@ $top_songs = getTopSongs();
 
 <body>
 <?php include('header.html') ?> 
+<div class="container">
 <h1>RATING TABLE</h1>
-<table>
+<table class="table">
+  <tr>
+    <th>Username</th>
+    <th>Rhythm</th>        
+    <th>Melody</th>
+    <th>Atmosphere</th>  
+    <th>General Rating</th>  
+    <th>Song Name</th>  
+    <th>Duration (Sec)</th>  
+    <th>Average Rating</th>  
+    <th>Artist</th>
+  </tr>
   <?php foreach ($list_of_ratings as $rating): ?>
     <tr>
       <td><?php echo $rating['userName']; ?></td>
@@ -53,7 +65,6 @@ $top_songs = getTopSongs();
       <td><?php echo $rating['melody']; ?></td>
       <td><?php echo $rating['atmosphere']; ?></td>  
       <td><?php echo $rating['generalRating']; ?></td>  
-      <td><?php echo $rating['description']; ?></td>  
       <td><?php echo $rating['songName']; ?></td>  
       <td><?php echo $rating['duration']; ?></td>  
       <td><?php echo $rating['avgRating']; ?></td>  
@@ -63,7 +74,13 @@ $top_songs = getTopSongs();
 </table>
 
 <h1>SONG TABLE</h1>
-<table>
+<table class="table">
+  <tr>
+    <th>Song Name</th>
+    <th>Average Rating</th>        
+    <th>Duration (Sec)</th>
+    <th>Artist</th>                
+  </tr>
   <?php foreach ($top_songs as $song): ?>
     <tr>
       <td><?php echo $song['songName']; ?></td>
@@ -73,6 +90,7 @@ $top_songs = getTopSongs();
     </tr>
   <?php endforeach; ?>
 </table>
+</div>
 
 <?php include('footer.html') ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>

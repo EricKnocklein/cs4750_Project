@@ -8,7 +8,7 @@ function searchSongByName($name) {
 
     $query = 'SELECT songs.songName, artists.artistName, songs.avgRating 
     FROM songs, songreleasedby, artists
-    WHERE songName LIKE "%:name%"
+    WHERE songName LIKE CONCAT("%", :name, "%")
     AND songs.id = songreleasedby.songID
     AND songreleasedby.artistID = artists.id
     ORDER BY songs.avgRating DESC';

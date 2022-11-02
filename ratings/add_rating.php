@@ -3,7 +3,8 @@ require("../connect-db.php");
 require("../db-func.php");
 
 $uid = 1; //temp
-$search_result = null;
+$search_term = "";
+$search_result = searchSongByName($search_term);
 $selected_song = null;
 ?>
 
@@ -23,6 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_POST['description']
             );
         }
+    }
+    if (!empty($_POST['searchAction'])) {
+        $search_term = $_POST['searchAction'];
+        $search_result = searchSongByName($search_term);
+        if ($search_result==null) echo "BAD";
     }
 }
 ?>
@@ -78,6 +84,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             />
         </div>
     </form>
+    <form name="SearchSongs" action="add_rating.php" method="post" id="searchForm">
+        <div class="row mb-3 mx-3">
+            Search Songs:
+            <input type="text" class="form-control" name="searchAction" value="<?php echo $search_term ?>"/>            
+        </div>
+    </form>
+    <table class="table">
+        <tr>
+            <th>Song Name</th>
+            <th>Artist</th>        
+            <th>Average Rating</th>
+        </tr>
+        <?php if ($search_result!=null) foreach ($search_result as $song): ?>
+            <tr>
+                <td><?php echo $song['songName']; ?></td>
+                <td><?php echo $song['artistName']; ?></td>        
+                <td><?php echo $song['avgRating']; ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
 </div>
 
 <?php include('../footer.html') ?>
