@@ -215,7 +215,7 @@ function getUsersRatings($id) {
     AND idToUsername.id = :id
     AND ratings.id = submits.ratingID
     AND rated.ratingID = submits.ratingID
-    AND songs.ID = rated.ratingID
+    AND songs.ID = rated.songID
     AND songReleasedBy.songID = songs.id
     AND artists.id = songReleasedBy.artistID';
 
@@ -257,7 +257,7 @@ function addRating($rid, $sid, $uid, $rhythm, $melody, $atmosphere, $general, $d
 
     $statement = $db->prepare($query);
     $statement->bindValue(':rid', $rid);
-    $statement->bindValue(':sid', $isd);
+    $statement->bindValue(':sid', $sid);
     $statement->bindValue(':uid', $uid);
     $statement->bindValue(':rhythm', $rhythm);
     $statement->bindValue(':melody', $melody);

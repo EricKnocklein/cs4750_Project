@@ -48,16 +48,16 @@ $top_songs = getTopSongs();
 <table>
   <?php foreach ($list_of_ratings as $rating): ?>
     <tr>
-      <td><?php echo $rating['idToUsername.userName']; ?></td>
-      <td><?php echo $rating['ratings.rhythm']; ?></td>        
-      <td><?php echo $rating['ratings.melody']; ?></td>
-      <td><?php echo $rating['ratings.atmosphere']; ?></td>  
-      <td><?php echo $rating['ratings.generalRating']; ?></td>  
-      <td><?php echo $rating['ratings.description']; ?></td>  
-      <td><?php echo $rating['songs.songName']; ?></td>  
-      <td><?php echo $rating['songs.duration']; ?></td>  
-      <td><?php echo $rating['songs.avgRating']; ?></td>  
-      <td><?php echo $rating['artists.artistName']; ?></td>                  
+      <td><?php echo $rating['userName']; ?></td>
+      <td><?php echo $rating['rhythm']; ?></td>        
+      <td><?php echo $rating['melody']; ?></td>
+      <td><?php echo $rating['atmosphere']; ?></td>  
+      <td><?php echo $rating['generalRating']; ?></td>  
+      <td><?php echo $rating['description']; ?></td>  
+      <td><?php echo $rating['songName']; ?></td>  
+      <td><?php echo $rating['duration']; ?></td>  
+      <td><?php echo $rating['avgRating']; ?></td>  
+      <td><?php echo $rating['artistName']; ?></td>                  
     </tr>
   <?php endforeach; ?>
 </table>
