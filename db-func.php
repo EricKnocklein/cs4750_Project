@@ -21,6 +21,26 @@ function searchSongByName($name) {
     return $result;
 }
 
+function searchSongByNameLim($name, $lim) {
+    global $db;
+
+    $query = 'SELECT songs.songName, artists.artistName, songs.avgRating 
+    FROM songs, songreleasedby, artists
+    WHERE songName LIKE CONCAT("%", :name, "%")
+    AND songs.id = songreleasedby.songID
+    AND songreleasedby.artistID = artists.id
+    LIMIT :lim
+    ORDER BY songs.avgRating DESC';
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':name', $name);
+    $statement->bindValue(':lim', $lim);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result;
+}
+
 // Searching songs by artist name and song name
 function searchSongsByNameAndArtist($aName, $sName) {
     global $db;

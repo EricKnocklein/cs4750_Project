@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if (!empty($_POST['searchAction'])) {
         $search_term = $_POST['searchAction'];
-        $search_result = searchSongByName($search_term);
+        $search_result = searchSongByNameLim($search_term, 10);
         if ($search_result==null) echo "BAD";
     }
 }
