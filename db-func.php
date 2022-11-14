@@ -72,7 +72,7 @@ function searchArtistByName($name) {
     ORDER BY avgSongRating DESC';
 
     $statement = $db->prepare($query);
-    $statement->bindValue(':name', $aName);
+    $statement->bindValue(':name', $name);
     $statement->execute();
     $result = $statement->fetchAll();
     $statement->closeCursor();

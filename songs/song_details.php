@@ -3,8 +3,10 @@ require("connect-db.php");
 require("db-func.php");
 
 //put variables we need here 
-$songID = 1 // temp
-$list_of_ratings = displayRatings($songID)
+$songID = 1; // temp
+$avgRating = getSongAvgRating($songID);
+$songDetail = songDetails($songID);
+$list_of_ratings = displayRatings($songID);
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +25,9 @@ $list_of_ratings = displayRatings($songID)
 
 <body>
 <?php include('header.html') ?> 
+<div>
+    Average Rating: <?php echo $avgRating; ?>
+</div>
 <div class="container">
 <h1>RATING TABLE</h1>
 <table class="table">
