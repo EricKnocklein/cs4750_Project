@@ -105,12 +105,12 @@ function searchAlbumByNameAndArtist($album, $artist) {
 function displayRatings($id) {
     global $db;
 
-    $query = 'SELECT ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.description, idToUsername.userName
-	FROM ratings, rated, submits, idToUsername
+    $query = 'SELECT ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.description, idtousername.userName
+	FROM ratings, rated, submits, idtousername
 	WHERE rated.ratingID = rating.ID 
     AND rated.songID = :id
 	AND ratings.ID = submits.ratingID
-	AND submits.userID = idToUsername.id';
+	AND submits.userID = idtousername.id';
 
     $statement = $db->prepare($query);
     $statement->bindValue(':id', $id);
@@ -144,9 +144,9 @@ function getArtistsAvgRating() {
     global $db;
 
     $query = 'SELECT artists.id, AVG(songs.avgRating)
-    FROM artists, songReleasedBy, songs
-    WHERE songReleasedBy.artistID = artists.id
-    AND songReleasedBy.songID = songs.id
+    FROM artists, songreleasedby, songs
+    WHERE songreleasedby.artistID = artists.id
+    AND songreleasedby.songID = songs.id
     AND songs.avgRating >= 0
     GROUP BY artists.id';
 
@@ -214,7 +214,7 @@ function getUserData($id) {
     global $db;
 
     $query = 'SELECT userName, email, dateJoined
-    FROM idToUsername NATURAL JOIN idToInfo
+    FROM idtousername NATURAL JOIN idToInfo
     WHERE id = :id';
 
     $statement = $db->prepare($query);
@@ -229,21 +229,23 @@ function getUserData($id) {
 function getUsersRatings($id) {
     global $db;
 
-    $query = 'SELECT idToUsername.userName, ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.generalRating, ratings.description, songs.songName, songs.duration, songs.avgRating, artists.artistName
-    FROM ratings, rated, idToUsername, songs, submits, songReleasedBy, artists
+    $query = 'SELECT idtousername.userName, ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.generalRating, ratings.description, songs.songName, songs.duration, songs.avgRating, artists.artistName
+    FROM ratings, rated, idtousername, songs, submits, songreleasedby, artists
     WHERE submits.userID = :id
-    AND idToUsername.id = :id
+    AND idtousername.id = :id
     AND ratings.id = submits.ratingID
     AND rated.ratingID = submits.ratingID
     AND songs.ID = rated.songID
-    AND songReleasedBy.songID = songs.id
-    AND artists.id = songReleasedBy.artistID';
+    AND songreleasedby.songID = songs.id
+    AND artists.id = songreleasedby.artistID';
 
     $statement = $db->prepare($query);
     $statement->bindValue(':id', $id);
     $statement->execute();
     $result = $statement->fetchAll();
     $statement->closeCursor();
+    echo count($result);
+
     return $result;
 }
 
@@ -252,9 +254,9 @@ function getTopSongs() {
     global $db;
 
     $query = 'SELECT songs.songName as songName, songs.avgRating as avgRating, songs.duration as duration, artists.artistName as artist
-    FROM songs, songReleasedBy, artists
-    WHERE songs.id = songReleasedBy.songID
-    AND songReleasedBy.artistID = artists.id
+    FROM songs, songreleasedby, artists
+    WHERE songs.id = songreleasedby.songID
+    AND songreleasedby.artistID = artists.id
     ORDER BY songs.avgRating DESC
     LIMIT 5';
 
@@ -292,7 +294,7 @@ function addRating($rid, $sid, $uid, $rhythm, $melody, $atmosphere, $general, $d
 function addUser($uid, $name, $email, $date) {
     global $db;
 
-    $query = 'INSERT INTO idToUsername(id, userName) VALUES (:uid, :name);
+    $query = 'INSERT INTO idtousername(id, userName) VALUES (:uid, :name);
     INSERT INTO idToInfo(id, email, dateJoined) VALUES (:uid, :email, :date);';
 
     $statement = $db->prepare($query);
@@ -309,7 +311,7 @@ function addSong($id, $dur, $name, $artid, $albid ) {
     global $db;
 
     $query = 'INSERT INTO songs(id, duration,avgRating, songName) VALUES (:id, :dur, NULL, :name );
-    INSERT INTO songReleasedBy(songID, artistID) VALUES (:id, :artid);
+    INSERT INTO songreleasedby(songID, artistID) VALUES (:id, :artid);
     INSERT INTO onAlbum(songID, albumID) VALUES (:id, :albid);';
 
     $statement = $db->prepare($query);
@@ -403,7 +405,7 @@ function deleteRating($id) {
 function deleteUser($id) {
     global $db;
 
-    $query = 'DELETE FROM idToUsername WHERE id = :id;
+    $query = 'DELETE FROM idtousername WHERE id = :id;
     DELETE FROM idToInfo WHERE id = :id;';
 
     $statement = $db->prepare($query);
