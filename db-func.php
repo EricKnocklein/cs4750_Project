@@ -2,6 +2,54 @@
 
 // ================================================== SELECT ==================================================
 
+// Get a user's hashed password
+function getPassword($email) {
+    global $db;
+
+    $query = 'SELECT pwd 
+    FROM emailtopassword
+    WHERE email = :email';
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':email', $email);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result;
+}
+
+// Get a user's id from eamil
+function getId($email) {
+    global $db;
+
+    $query = 'SELECT id 
+    FROM idtoinfo
+    WHERE email = :email';
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':email', $email);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result;
+}
+
+// get highest uid
+// Get a user's id from eamil
+function getHighestId() {
+    global $db;
+
+    $query = 'SELECT MAX(id)
+    FROM idtoinfo;';
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result;
+}
+
+
 // Searching songs by song name
 function searchSongByName($name) {
     global $db;
@@ -244,7 +292,6 @@ function getUsersRatings($id) {
     $statement->execute();
     $result = $statement->fetchAll();
     $statement->closeCursor();
-    echo count($result);
 
     return $result;
 }
@@ -291,17 +338,21 @@ function addRating($rid, $sid, $uid, $rhythm, $melody, $atmosphere, $general, $d
 }
 
 // Add User
-function addUser($uid, $name, $email, $date) {
+function addUser($name, $email, $password) {
     global $db;
 
+    $hash = md5($password);
+    $uid = getHighestId();
+
     $query = 'INSERT INTO idtousername(id, userName) VALUES (:uid, :name);
-    INSERT INTO idToInfo(id, email, dateJoined) VALUES (:uid, :email, :date);';
+    INSERT INTO emailtopassword(email, pwd) VALUES (:email, :hash);
+    INSERT INTO idToInfo(id, email, dateJoined) VALUES (:uid, :email, GETDATE());';
 
     $statement = $db->prepare($query);
     $statement->bindValue(':uid', $uid);
     $statement->bindValue(':name', $name);
     $statement->bindValue(':email', $email);
-    $statement->bindValue(':date', $date);
+    $statement->bindValue(':uid', $uid);
     $statement->execute();
     $statement->closeCursor();
 }

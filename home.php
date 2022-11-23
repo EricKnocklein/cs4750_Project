@@ -3,7 +3,9 @@ require("connect-db.php");
 require("db-func.php");
 
 //put variables we need here 
-$uid = 1; // temp
+session_start();
+$uid = $_SESSION['user']; // temp
+echo $uid;
 $list_of_ratings = getUsersRatings($uid); 
 $top_songs = getTopSongs();
 ?>
