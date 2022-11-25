@@ -24,7 +24,7 @@ $list_of_ratings = displayRatings($songID);
 
 
 <body>
-<?php include('header.html') ?> 
+<?php include('header.php') ?> 
 <div>
     Average Rating: <?php echo $avgRating; ?>
 </div>

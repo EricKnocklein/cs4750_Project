@@ -45,7 +45,7 @@ function getId($email) {
     $statement->execute();
     $result = $statement->fetchAll();
     $statement->closeCursor();
-    return $result;
+    return $result[0]["id"];
 }
 
 // get highest uid
@@ -276,7 +276,7 @@ function getUserData($id) {
     global $db;
 
     $query = 'SELECT userName, email, dateJoined
-    FROM idtousername NATURAL JOIN idToInfo
+    FROM idtousername NATURAL JOIN idtoinfo
     WHERE id = :id';
 
     $statement = $db->prepare($query);

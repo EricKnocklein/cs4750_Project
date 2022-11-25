@@ -15,7 +15,7 @@ include("db-func.php");
   <title>PHP State Maintenance (Session)</title>  
 </head>
 <body>
-   <?php include('header.html') ?> 
+   <?php include('header.php') ?> 
   
   <div class="container">
     <h1>Welcome to CS4640 Survey</h1>
