@@ -1,6 +1,6 @@
 <?php
 require("connect-db.php");      // include("connect-db.php");
-require("db-func.php");
+include("db-func.php");
 
 //put variables we need here    
 ?>
@@ -43,16 +43,26 @@ function reject($entry) {
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['email']) > 0){
    $email = trim($_POST['email']);
-   if (isset($_POST['pwd1']) && isset($_POST['pwd2']) && isset($_POST['username'])) {
+   $email_array = getEmails();
+   $exists = false;
+   foreach ($email_array as $e) {
+      if ($e["email"] == $email) {
+         $exists = true;
+         break;
+      }
+   }
+   if ($exists) {
+      echo "Email Already in User";
+   } else if (isset($_POST['pwd1']) && isset($_POST['pwd2']) && isset($_POST['username'])) {
       if ($_POST['pwd1'] == $_POST['pwd2']) {
-         $pwd = trim($_POST['pwd']);
+         $pwd = trim($_POST['pwd1']);
          $hash_pwd = md5($pwd);
-         echo "here\n";
+         echo "here   ";
          addUser($_POST['username'], $email, $hash_pwd);
-         echo "here2\n";
+         echo "    here2    ";
          $_SESSION['user'] = getId($email);
          $_SESSION['pwd'] = $hash_pwd;
-         header('Location: home.php');
+         // header('Location: home.php');
       }
    }
 }

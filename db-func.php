@@ -2,6 +2,20 @@
 
 // ================================================== SELECT ==================================================
 
+// get all emails
+function getEmails() {
+    global $db;
+
+    $query = 'SELECT email 
+    FROM emailtopassword';
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result;
+}
+
 // Get a user's hashed password
 function getPassword($email) {
     global $db;
@@ -46,7 +60,7 @@ function getHighestId() {
     $statement->execute();
     $result = $statement->fetchAll();
     $statement->closeCursor();
-    return $result;
+    return $result[0]["MAX(id)"];
 }
 
 
@@ -342,7 +356,10 @@ function addUser($name, $email, $password) {
     global $db;
 
     $hash = md5($password);
+    echo $hash;
+    echo "    ";
     $uid = intval(getHighestId()) + 1;
+    echo $uid;
 
     $query = 'INSERT INTO idtousername(id, userName) VALUES (:uid, :name);
     INSERT INTO emailtopassword(email, pwd) VALUES (:email, :hash);

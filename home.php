@@ -45,7 +45,7 @@ $top_songs = getTopSongs();
 
 
 <body>
-<?php include('header.html') ?> 
+<?php include('header.php') ?> 
 <div class="container">
 <h1>RATING TABLE</h1>
 <table class="table">

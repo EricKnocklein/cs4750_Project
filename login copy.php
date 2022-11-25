@@ -41,11 +41,13 @@ function reject($entry) {
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['email']) > 0){
    $email = trim($_POST['email']);
-   $setPwd = getPassword($email);
+   $setPwd = getPassword($email)[0]["pwd"];
    if (isset($_POST['pwd'])) {
       $pwd = trim($_POST['pwd']);
-      $hash_pwd = md5($pwd);
-      if ($hash_pwd == $setPwd) {
+      $hash_pwd = md5(md5($pwd));
+      echo $setPwd;
+      echo $hash_pwd;
+      if (strcmp($setPwd, $hash_pwd) == 0) {
          $_SESSION['user'] = getId($email);
          $_SESSION['pwd'] = $hash_pwd;
          header('Location: home.php');
