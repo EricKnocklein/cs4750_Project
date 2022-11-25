@@ -342,14 +342,14 @@ function addUser($name, $email, $password) {
     global $db;
 
     $hash = md5($password);
-    $uid = getHighestId();
+    $uid = intval(getHighestId()) + 1;
 
     $query = 'INSERT INTO idtousername(id, userName) VALUES (:uid, :name);
     INSERT INTO emailtopassword(email, pwd) VALUES (:email, :hash);
-    INSERT INTO idToInfo(id, email, dateJoined) VALUES (:uid, :email, GETDATE());';
+    INSERT INTO idtoinfo(id, email, dateJoined) VALUES (:uid, :email, NULL);';
 
     $statement = $db->prepare($query);
-    $statement->bindValue(':uid', $uid);
+    $statement->bindValue(':hash', $hash);
     $statement->bindValue(':name', $name);
     $statement->bindValue(':email', $email);
     $statement->bindValue(':uid', $uid);
@@ -363,7 +363,7 @@ function addSong($id, $dur, $name, $artid, $albid ) {
 
     $query = 'INSERT INTO songs(id, duration,avgRating, songName) VALUES (:id, :dur, NULL, :name );
     INSERT INTO songreleasedby(songID, artistID) VALUES (:id, :artid);
-    INSERT INTO onAlbum(songID, albumID) VALUES (:id, :albid);';
+    INSERT INTO onalbum(songID, albumID) VALUES (:id, :albid);';
 
     $statement = $db->prepare($query);
     $statement->bindValue(':id', $id);
