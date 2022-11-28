@@ -253,7 +253,7 @@ function getAlbumsAvgRating() {
 function getAlbumAvgRating($id) {
     global $db;
 
-    $query = 'SELECT albums.id, AVG(songs.avgRating)
+    $query = 'SELECT albums.id, AVG(songs.avgRating) AS a
     FROM albums, onalbum, songs
     WHERE songs.id = onalbum.songID
     AND albums.id = onalbum.albumID
@@ -266,7 +266,7 @@ function getAlbumAvgRating($id) {
     $statement->execute();
     $result = $statement->fetchAll();
     $statement->closeCursor();
-    return $result;
+    return $result[0]["a"];
 }
 
 // Get all albums that a song is on given songID

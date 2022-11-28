@@ -45,7 +45,7 @@ $songs = getSongsByAlbum($albumID);
 <h1><b><?php echo $albumDetail["albumName"];?></b></h1>
 <h2>Details</h2>
 <div class="container">
-  <b>Average Song Rating: </b><?php echo $albumDetail["avgSongRating"];?><br/>
+  <b>Average Song Rating: </b><?php echo $avgRating;?><br/>
   <table class="table">
     <tr>
       <th>Song</th>

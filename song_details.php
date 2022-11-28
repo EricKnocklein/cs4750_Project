@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <b>Duration in Seconds: </b><?php echo $songDetail["duration"];?><br/>
   <b>Average Song Rating: </b><?php echo $songDetail["avgRating"];?><br/>
   <b>Album: </b><?php echo $songDetail["albumName"];?><br/>
-  <b>Average Rating for Songs on the Album: </b><?php echo $songDetail["avgSongRating"];?><br/>
+  <b>Average Rating for Songs on the Album: </b><?php echo getAlbumAvgRating($songDetail["albumID"]);?><br/>
   <form action="album_details.php" method="post">
     <input type="submit" value="View Album" name="btnAction" class="btn btn-primary" 
         title="View Album" />
