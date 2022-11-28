@@ -10,7 +10,7 @@
       }
     ?>
     <a class='nav-item nav-link' href="home.php">Homepage</a>
-    <a class='nav-item nav-link' href="ratings/add_rating.php">Add Rating</a>
+    <a class='nav-item nav-link' href="add_rating.php">Search and Add Rating</a>
     <!-- Can add more links as we add functionality -->
   </nav>
 </header>

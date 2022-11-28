@@ -22,7 +22,7 @@ include("db-func.php");
     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
       User Name: <input type="text" name="username" class="form-control" required /> <br/>
       Email: <input type="text" name="email" class="form-control" autofocus required /> <br/>
-      Password: <input type="password" name="pwd1" class="form-control" required /> <br/>
+      Password (Please do not reuse passwords!): <input type="password" name="pwd1" class="form-control" required /> <br/>
       Retype Password: <input type="password" name="pwd2" class="form-control" required /> <br/>
       <input type="submit" value="Sign in" class="btn btn-light"  />   
     </form>
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['email']) > 0){
       }
    }
    if ($exists) {
-      echo "Email Already in User";
+      echo "Email Already in Use";
    } else if (isset($_POST['pwd1']) && isset($_POST['pwd2']) && isset($_POST['username'])) {
       if ($_POST['pwd1'] == $_POST['pwd2']) {
          $pwd = trim($_POST['pwd1']);

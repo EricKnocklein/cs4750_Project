@@ -29,7 +29,7 @@ function getPassword($email) {
     $statement->execute();
     $result = $statement->fetchAll();
     $statement->closeCursor();
-    return $result;
+    return $result[0];
 }
 
 // Get a user's id from eamil
@@ -49,7 +49,6 @@ function getId($email) {
 }
 
 // get highest uid
-// Get a user's id from eamil
 function getHighestId() {
     global $db;
 
@@ -63,12 +62,26 @@ function getHighestId() {
     return $result[0]["MAX(id)"];
 }
 
+// get highest rating id
+function getHighestRid() {
+    global $db;
+
+    $query = 'SELECT MAX(id)
+    FROM ratings;';
+
+    $statement = $db->prepare($query);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result[0]["MAX(id)"];
+}
+
 
 // Searching songs by song name
 function searchSongByName($name) {
     global $db;
 
-    $query = 'SELECT songs.songName, artists.artistName, songs.avgRating 
+    $query = 'SELECT songs.songName, artists.artistName, songs.avgRating, songs.id 
     FROM songs, songreleasedby, artists
     WHERE songName LIKE CONCAT("%", :name, "%")
     AND songs.id = songreleasedby.songID
@@ -167,9 +180,9 @@ function searchAlbumByNameAndArtist($album, $artist) {
 function displayRatings($id) {
     global $db;
 
-    $query = 'SELECT ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.description, idtousername.userName
+    $query = 'SELECT ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.description, idtousername.userName, ratings.generalRating
 	FROM ratings, rated, submits, idtousername
-	WHERE rated.ratingID = rating.ID 
+	WHERE rated.ratingID = ratings.ID 
     AND rated.songID = :id
 	AND ratings.ID = submits.ratingID
 	AND submits.userID = idtousername.id';
@@ -186,7 +199,7 @@ function displayRatings($id) {
 function getSongAvgRating($id) {
     global $db;
 
-    $query = 'SELECT AVG(ratings.generalRating)
+    $query = 'SELECT AVG(ratings.generalRating) AS "a"
     FROM songs, ratings, rated
     WHERE songs.id = :id
     AND rated.songID = songs.id
@@ -198,7 +211,7 @@ function getSongAvgRating($id) {
     $statement->execute();
     $result = $statement->fetchAll();
     $statement->closeCursor();
-    return $result;
+    return $result[0]["a"];
 }
 
 // Get average song rating for each artist
@@ -258,17 +271,17 @@ function searchAlbumBySong($id) {
 function songDetails($id) {
     global $db;
 
-    $query = 'SELECT albums.id
-    FROM albums, onAlbum
-    WHERE onAlbum.albumID = albums.id
-    AND onAlbum.songID = :id';
+    $query = 'SELECT *
+    FROM songs, onalbum
+    WHERE onalbum.songId = songs.id
+    AND onalbum.songID = :id';
 
     $statement = $db->prepare($query);
     $statement->bindValue(':id', $id);
     $statement->execute();
     $result = $statement->fetchAll();
     $statement->closeCursor();
-    return $result;
+    return $result[0];
 }
 
 // Get User Data
@@ -291,7 +304,7 @@ function getUserData($id) {
 function getUsersRatings($id) {
     global $db;
 
-    $query = 'SELECT idtousername.userName, ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.generalRating, ratings.description, songs.songName, songs.duration, songs.avgRating, artists.artistName
+    $query = 'SELECT idtousername.userName, ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.generalRating, ratings.description, songs.songName, songs.duration, songs.avgRating, artists.artistName, ratings.id
     FROM ratings, rated, idtousername, songs, submits, songreleasedby, artists
     WHERE submits.userID = :id
     AND idtousername.id = :id
@@ -310,11 +323,11 @@ function getUsersRatings($id) {
     return $result;
 }
 
-// Get the most highly rated 5 (or so songs)
+// Get the most highly rated 5 (or so) songs
 function getTopSongs() {
     global $db;
 
-    $query = 'SELECT songs.songName as songName, songs.avgRating as avgRating, songs.duration as duration, artists.artistName as artist
+    $query = 'SELECT songs.songName as songName, songs.avgRating as avgRating, songs.duration as duration, artists.artistName as artist, songs.id as id
     FROM songs, songreleasedby, artists
     WHERE songs.id = songreleasedby.songID
     AND songreleasedby.artistID = artists.id
@@ -356,10 +369,7 @@ function addUser($name, $email, $password) {
     global $db;
 
     $hash = md5($password);
-    echo $hash;
-    echo "    ";
     $uid = intval(getHighestId()) + 1;
-    echo $uid;
 
     $query = 'INSERT INTO idtousername(id, userName) VALUES (:uid, :name);
     INSERT INTO emailtopassword(email, pwd) VALUES (:email, :hash);

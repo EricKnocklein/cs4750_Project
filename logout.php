@@ -10,22 +10,6 @@
 <body>
 
 <?php session_start(); // make sessions available ?>
-  
-  <div class="container">
-    <h1>CS4640 Survey</h1>
-    <h3>Summary</h3>
-      Question 1: What did you have for lunch?
-      <ul>
-        <li>You answered <?php if (isset($_SESSION['lunch'])) echo $_SESSION['lunch']; ?>
-      </ul>
-      Question 2: Who is your most favorite instructor?
-      <ul>
-        <li>You answered <?php if (isset($_SESSION['favorite_instr'])) echo $_SESSION['favorite_instr']; ?> 
-      </ul>
-    </p>    
-    
-    Successfully logged out 
-  </div>
 
 <?php
 // Set session variables can be removed by specifying their element name to unset() function.
@@ -39,19 +23,9 @@ if (count($_SESSION) > 0)     // Check if there are session variables
       // However, the session object still remains on the server.    	
       unset($_SESSION[$key]);      
    }  
-   echo "sessionID = " . session_id() . "<br/>";
-   session_destroy();     // complete terminate the session instance  
-   echo "sessionID = " . session_id() . "<br/>";
-
    // redirect to the login page immediately 
-//    header('Location: login.php');
+   header('Location: home.php');
 
-   // redirect with 5 seconds delay
-   header('refresh:5; url=login.php');
 }
 
 ?>
-
-
-</body>
-</html>

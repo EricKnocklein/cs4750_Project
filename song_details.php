@@ -3,10 +3,23 @@ require("connect-db.php");
 require("db-func.php");
 
 //put variables we need here 
-$songID = 1; // temp
+$songID = null; // temp
 $avgRating = getSongAvgRating($songID);
 $songDetail = songDetails($songID);
 $list_of_ratings = displayRatings($songID);
+?>
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (!empty($_POST['btnAction'])) {
+    if ($_POST['btnAction'] == 'Details') {
+      $songID = intval($_POST["selected_song"]);
+      $avgRating = getSongAvgRating($songID);
+      $songDetail = songDetails($songID);
+      $list_of_ratings = displayRatings($songID);
+    }
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,11 +38,11 @@ $list_of_ratings = displayRatings($songID);
 
 <body>
 <?php include('header.php') ?> 
-<div>
-    Average Rating: <?php echo $avgRating; ?>
-</div>
 <div class="container">
-<h1>RATING TABLE</h1>
+<h1><b><?php echo $songDetail["songName"]?></b></h1>
+<h2>Details</h2>
+TODO
+<h2>Ratings</h2>
 <table class="table">
   <tr>
     <th>Username</th>
@@ -37,10 +50,6 @@ $list_of_ratings = displayRatings($songID);
     <th>Melody</th>
     <th>Atmosphere</th>  
     <th>General Rating</th>  
-    <th>Song Name</th>  
-    <th>Duration (Sec)</th>  
-    <th>Average Rating</th>  
-    <th>Artist</th>
   </tr>
   <?php foreach ($list_of_ratings as $rating): ?>
     <tr>
@@ -48,11 +57,7 @@ $list_of_ratings = displayRatings($songID);
       <td><?php echo $rating['rhythm']; ?></td>        
       <td><?php echo $rating['melody']; ?></td>
       <td><?php echo $rating['atmosphere']; ?></td>  
-      <td><?php echo $rating['generalRating']; ?></td>  
-      <td><?php echo $rating['songName']; ?></td>  
-      <td><?php echo $rating['duration']; ?></td>  
-      <td><?php echo $rating['avgRating']; ?></td>  
-      <td><?php echo $rating['artistName']; ?></td>                  
+      <td><?php echo $rating['generalRating']; ?></td>                 
     </tr>
   <?php endforeach; ?>
 </table>

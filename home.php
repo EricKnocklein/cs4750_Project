@@ -4,8 +4,7 @@ require("db-func.php");
 
 //put variables we need here 
 session_start();
-$uid = $_SESSION['user']; // temp
-echo $uid;
+$uid = $_SESSION['user'];
 $list_of_ratings = getUsersRatings($uid); 
 $top_songs = getTopSongs();
 ?>
@@ -37,7 +36,7 @@ $top_songs = getTopSongs();
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="Eric Knocklein and Andre Knocklein">
   <meta name="description" content="Homepage of the Song Rating App">      
-  <title>DB interfacing</title>
+  <title>Home</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <!-- <link rel="icon" type="image/png" href="http://www.cs.virginia.edu/~up3f/cs4750/images/db-icon.png" /> -->
@@ -47,48 +46,70 @@ $top_songs = getTopSongs();
 <body>
 <?php include('header.php') ?> 
 <div class="container">
-<h1>RATING TABLE</h1>
-<table class="table">
-  <tr>
-    <th>Username</th>
-    <th>Rhythm</th>        
-    <th>Melody</th>
-    <th>Atmosphere</th>  
-    <th>General Rating</th>  
-    <th>Song Name</th>  
-    <th>Duration (Sec)</th>  
-    <th>Average Rating</th>  
-    <th>Artist</th>
-  </tr>
-  <?php foreach ($list_of_ratings as $rating): ?>
+<?php if (isset($_SESSION['user'])): ?>
+  <h1>My Ratings</h1>
+  <table class="table">
     <tr>
-      <td><?php echo $rating['userName']; ?></td>
-      <td><?php echo $rating['rhythm']; ?></td>        
-      <td><?php echo $rating['melody']; ?></td>
-      <td><?php echo $rating['atmosphere']; ?></td>  
-      <td><?php echo $rating['generalRating']; ?></td>  
-      <td><?php echo $rating['songName']; ?></td>  
-      <td><?php echo $rating['duration']; ?></td>  
-      <td><?php echo $rating['avgRating']; ?></td>  
-      <td><?php echo $rating['artistName']; ?></td>                  
+      <th>Artist</th>
+      <th>Song Name</th>
+      <th>Rhythm</th>        
+      <th>Melody</th>
+      <th>Atmosphere</th>  
+      <th>General Rating</th>  
+      <th>Average Rating</th>  
+      <th></th>
     </tr>
-  <?php endforeach; ?>
-</table>
+    <?php foreach ($list_of_ratings as $rating): ?>
+      <tr>
+        <td><?php echo $rating['artistName']; ?></td>
+        <td><?php echo $rating['songName']; ?></td>
+        <td><?php echo $rating['rhythm']; ?></td>        
+        <td><?php echo $rating['melody']; ?></td>
+        <td><?php echo $rating['atmosphere']; ?></td>  
+        <td><?php echo $rating['generalRating']; ?></td>  
+        <td><?php echo $rating['avgRating']; ?></td>  
+        <td>
+          <form action="rating_details.php" method="post">
+            <input type="submit" value="Details" name="btnAction" class="btn btn-primary" 
+                  title="Click to See Rating Details" />
+            <input type="hidden" name="selected_rating" 
+                  value="<?php echo $rating['id']; ?>"
+            />                
+          </form>
+        </td>              
+      </tr>
+    <?php endforeach; ?>
+  </table>
+<?php endif; ?>
 
-<h1>SONG TABLE</h1>
+<h1>Popular Songs</h1>
 <table class="table">
   <tr>
     <th>Song Name</th>
     <th>Average Rating</th>        
     <th>Duration (Sec)</th>
-    <th>Artist</th>                
+    <th>Artist</th>
+    <?php if (isset($_SESSION['user'])): ?>
+      <th></th>
+    <?php endif; ?>
   </tr>
   <?php foreach ($top_songs as $song): ?>
     <tr>
       <td><?php echo $song['songName']; ?></td>
       <td><?php echo $song['avgRating']; ?></td>        
       <td><?php echo $song['duration']; ?></td>
-      <td><?php echo $song['artist']; ?></td>                
+      <td><?php echo $song['artist']; ?></td>
+      <?php if (isset($_SESSION['user'])): ?>
+        <td>
+          <form action="song_details.php" method="post">
+            <input type="submit" value="Details" name="btnAction" class="btn btn-primary" 
+                  title="Click to See Song Details" />
+            <input type="hidden" name="selected_song" 
+                  value="<?php echo $song['id']; ?>"
+            />                
+          </form>
+        </td>
+      <?php endif; ?>               
     </tr>
   <?php endforeach; ?>
 </table>

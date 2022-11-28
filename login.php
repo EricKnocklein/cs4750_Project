@@ -43,7 +43,7 @@ function reject($entry) {
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['email']) > 0){
    $email = trim($_POST['email']);
-   $setPwd = getPassword($email)[0]["pwd"];
+   $setPwd = getPassword($email)["pwd"];
    if (isset($_POST['pwd'])) {
       $pwd = trim($_POST['pwd']);
       $hash_pwd = md5(md5($pwd));

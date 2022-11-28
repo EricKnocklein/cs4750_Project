@@ -2,7 +2,8 @@
 require("connect-db.php");   
 require("db-func.php");
 
-$uid = 1; //temp
+session_start();
+$uid = $_SESSION['user'];
 $search_term = "";
 $search_result = searchSongByName($search_term);
 $selected_song = null;
@@ -12,7 +13,7 @@ $selected_song = null;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($_POST['btnAction'])) {
         if ($_POST['btnAction'] == 'Add') {
-            $rid = rand(0,10);
+            $rid = intval(getHighestRid()) + 1;
             addRating(
                 $rid, 
                 $_POST['songid'], 
@@ -23,6 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_POST['general'], 
                 $_POST['description']
             );
+        } else if ($_POST['btnAction'] == 'Select') {
+            $selected_song = intval($_POST["selected_song"]);
         }
     }
     if (!empty($_POST['searchAction'])) {
@@ -50,40 +53,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php include('header.php') ?> 
 
 <div class="container">
-    <h1>Add a Rating for a Song</h1>
-    <form name="AddRatingForm" action="add_rating.php" method="post">
-        <div class="row mb-3 mx-3">
-            Song ID:
-            <input type="number" class="form-control" name="songid" required 
-                value="<?php if ($selected_song!=null) echo $selected_song['id'] ?>"
-            />            
-        </div>
-        <div class="row mb-3 mx-3">
-            Rhythm:
-            <input type="number" class="form-control" name="rhythm" required/>            
-        </div>
-        <div class="row mb-3 mx-3">
-            Melody:
-            <input type="number" class="form-control" name="melody" required/>            
-        </div>
-        <div class="row mb-3 mx-3">
-            Atmosphere:
-            <input type="number" class="form-control" name="atmosphere" required/>            
-        </div>
-        <div class="row mb-3 mx-3">
-            General:
-            <input type="number" class="form-control" name="general" required/>            
-        </div>
-        <div class="row mb-3 mx-3">
-            Description:
-            <input type="text" class="form-control" name="description" required/>            
-        </div>
-        <div>
-            <input type="submit" value="Add" name="btnAction" class="btn btn-dark" 
-                title="Add a rating" 
-            />
-        </div>
-    </form>
+    <?php if ($selected_song != null): ?>
+        <h1>Add a Rating for <b><?php echo songDetails($selected_song)["songName"];?></b></h1>
+        <form name="AddRatingForm" action="add_rating.php" method="post">
+            <div class="row mb-3 mx-3">
+                <input type="hidden" class="form-control" name="songid" required 
+                    value="<?php if ($selected_song!=null) echo $selected_song ?>"
+                />            
+            </div>
+            <div class="row mb-3 mx-3">
+                Rhythm:
+                <input type="number" class="form-control" name="rhythm" required/>            
+            </div>
+            <div class="row mb-3 mx-3">
+                Melody:
+                <input type="number" class="form-control" name="melody" required/>            
+            </div>
+            <div class="row mb-3 mx-3">
+                Atmosphere:
+                <input type="number" class="form-control" name="atmosphere" required/>            
+            </div>
+            <div class="row mb-3 mx-3">
+                General:
+                <input type="number" class="form-control" name="general" required/>            
+            </div>
+            <div class="row mb-3 mx-3">
+                Description:
+                <input type="text" class="form-control" name="description" required/>            
+            </div>
+            <div>
+                <input type="submit" value="Add" name="btnAction" class="btn btn-dark" 
+                    title="Add a rating" 
+                />
+            </div>
+        </form>
+    <?php endif; ?>
     <form name="SearchSongs" action="add_rating.php" method="post" id="searchForm">
         <div class="row mb-3 mx-3">
             Search Songs:
@@ -101,6 +105,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <td><?php echo $song['songName']; ?></td>
                 <td><?php echo $song['artistName']; ?></td>        
                 <td><?php echo $song['avgRating']; ?></td>
+                <?php if (isset($_SESSION['user'])): ?>
+                    <td>
+                        <form action="song_details.php" method="post">
+                            <input type="submit" value="Details" name="btnAction" class="btn btn-primary" 
+                                title="Click to See Song Details" />
+                            <input type="hidden" name="selected_song" 
+                                value="<?php echo $song['id']; ?>"
+                            />                
+                        </form>
+                    </td>
+                    <td>
+                        <form action="add_rating.php" method="post">
+                            <input type="submit" value="Select" name="btnAction" class="btn btn-primary" 
+                                title="Select a Song to Rate" />
+                            <input type="hidden" name="selected_song" 
+                                value="<?php echo $song['id']; ?>"
+                            />                
+                        </form>
+                    </td>
+                <?php endif; ?>
             </tr>
         <?php endforeach; ?>
     </table>
