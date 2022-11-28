@@ -83,18 +83,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <td><?php echo $rating['rhythm']; ?></td>        
       <td><?php echo $rating['melody']; ?></td>
       <td><?php echo $rating['atmosphere']; ?></td>  
-      <td><?php echo $rating['generalRating']; ?></td>   
-      <?php if (isset($_SESSION['user']) && $_SESSION['user'] == $rating["id"]): ?>
-        <td>
-          <form action="rating_details.php" method="post">
-            <input type="submit" value="Details" name="btnAction" class="btn btn-primary" 
-                  title="Click to See Rating Details" />
-            <input type="hidden" name="selected_rating" 
-                  value="<?php echo $rating['id']; ?>"
-            />                
-          </form>   
-        </td>
-      <?php endif ?>           
+      <td><?php echo $rating['generalRating']; ?></td>
+      <?php 
+        if (isset($_SESSION['user']) && $_SESSION['user'] == $rating["id"]) {
+          $text = "Edit";
+        } else {
+          $text = "Details";
+        }
+      ?>
+      <td>
+        <form action="rating_details.php" method="post">
+          <input type="submit" value="<?php echo $text;?>" name="btnAction" class="btn btn-primary" 
+                title="Click to See Rating Details" />
+          <input type="hidden" name="selected_rating" 
+                value="<?php echo $rating['id']; ?>"
+          />                
+        </form>   
+      </td>
     </tr>
   <?php endforeach; ?>
 </table>
