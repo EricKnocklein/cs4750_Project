@@ -250,6 +250,25 @@ function getAlbumsAvgRating() {
     return $result;
 }
 
+function getAlbumAvgRating($id) {
+    global $db;
+
+    $query = 'SELECT albums.id, AVG(songs.avgRating)
+    FROM albums, onalbum, songs
+    WHERE songs.id = onalbum.songID
+    AND albums.id = onalbum.albumID
+    AND songs.avgRating >= 0
+    GROUP BY albums.id
+    HAVING albums.id = :id';
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result;
+}
+
 // Get all albums that a song is on given songID
 function searchAlbumBySong($id) {
     global $db;
@@ -285,7 +304,23 @@ function songDetails($id) {
     return $result[0];
 }
 
-// Get details of a song
+// Get details of a rating
+function albumDetails($id) {
+    global $db;
+
+    $query = 'SELECT *
+    FROM albums
+    WHERE albums.id = :id';
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result[0];
+}
+
+// Get details of an album
 function ratingDetails($id) {
     global $db;
 
@@ -369,6 +404,40 @@ function getArtistsBySong($id) {
     WHERE artists.id = songreleasedby.artistID
     AND songs.id = songreleasedby.songID
     AND songs.id = :id';
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result;
+}
+
+function getArtistsByAlbum($id) {
+    global $db;
+
+    $query = 'SELECT artists.*
+    FROM artists, albums, albumreleasedby
+    WHERE artists.id = albumreleasedby.artistID
+    AND albums.id = albumreleasedby.albumID
+    AND albums.id = :id';
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result;
+}
+
+function getSongsByAlbum($id) {
+    global $db;
+
+    $query = 'SELECT songs.*
+    FROM songs, albums, onalbum
+    WHERE songs.id = onalbum.songID
+    AND albums.id = onalbum.albumID
+    AND albums.id = :id';
 
     $statement = $db->prepare($query);
     $statement->bindValue(':id', $id);
