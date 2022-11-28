@@ -285,6 +285,25 @@ function songDetails($id) {
     return $result[0];
 }
 
+// Get details of a song
+function ratingDetails($id) {
+    global $db;
+
+    $query = 'SELECT ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.description, idtousername.userName, ratings.generalRating, idtousername.id, rated.songID
+	FROM ratings, rated, submits, idtousername
+	WHERE rated.ratingID = ratings.ID 
+	AND ratings.ID = submits.ratingID
+    AND ratings.ID = :id
+	AND submits.userID = idtousername.id';
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result[0];
+}
+
 // Get User Data
 function getUserData($id) {
     global $db;
