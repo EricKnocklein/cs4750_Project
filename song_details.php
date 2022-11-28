@@ -7,6 +7,7 @@ $songID = null; // temp
 $avgRating = getSongAvgRating($songID);
 $songDetail = songDetails($songID);
 $list_of_ratings = displayRatings($songID);
+$artistsInfo = getArtistsBySong($songID)
 ?>
 
 <?php
@@ -17,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $avgRating = getSongAvgRating($songID);
       $songDetail = songDetails($songID);
       $list_of_ratings = displayRatings($songID);
+      $artistsInfo = getArtistsBySong($songID);
     }
   }
 }
@@ -41,7 +43,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="container">
 <h1><b><?php echo $songDetail["songName"]?></b></h1>
 <h2>Details</h2>
-TODO
+<div class="container">
+  <b>Duration in Seconds: </b><?php echo $songDetail["duration"]?><br/>
+  <b>Average Song Rating: </b><?php echo $songDetail["avgRating"]?><br/>
+  <b>Album: </b><?php echo $songDetail["albumName"]?><br/>
+  <b>Average Rating for Songs on the Album: </b><?php echo $songDetail["avgSongRating"]?><br/>
+  <table class="table">
+    <tr>
+      <th>Artist</th>
+      <th>Average Rating for Artist</th>
+    </tr>
+    <?php foreach ($artistsInfo as $artist): ?>
+      <tr>
+        <td><?php echo $artist['artistName']; ?></td>
+        <td><?php echo $artist['avgSongRating']; ?></td>                       
+      </tr>
+    <?php endforeach; ?>
+  </table>
+</div>
+<form action="add_rating.php" method="post">
+  <input type="submit" value="Add Rating" name="btnAction" class="btn btn-primary" 
+      title="Select a Song to Rate" />
+  <input type="hidden" name="selected_song" 
+      value="<?php echo $songID; ?>"
+  />                
+</form>
 <h2>Ratings</h2>
 <table class="table">
   <tr>
@@ -57,7 +83,18 @@ TODO
       <td><?php echo $rating['rhythm']; ?></td>        
       <td><?php echo $rating['melody']; ?></td>
       <td><?php echo $rating['atmosphere']; ?></td>  
-      <td><?php echo $rating['generalRating']; ?></td>                 
+      <td><?php echo $rating['generalRating']; ?></td>   
+      <?php if (isset($_SESSION['user']) && $_SESSION['user'] == $rating["id"]): ?>
+        <td>
+          <form action="rating_details.php" method="post">
+            <input type="submit" value="Details" name="btnAction" class="btn btn-primary" 
+                  title="Click to See Rating Details" />
+            <input type="hidden" name="selected_rating" 
+                  value="<?php echo $rating['id']; ?>"
+            />                
+          </form>   
+        </td>
+      <?php endif ?>           
     </tr>
   <?php endforeach; ?>
 </table>

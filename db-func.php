@@ -180,7 +180,7 @@ function searchAlbumByNameAndArtist($album, $artist) {
 function displayRatings($id) {
     global $db;
 
-    $query = 'SELECT ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.description, idtousername.userName, ratings.generalRating
+    $query = 'SELECT ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.description, idtousername.userName, ratings.generalRating, idtousername.id
 	FROM ratings, rated, submits, idtousername
 	WHERE rated.ratingID = ratings.ID 
     AND rated.songID = :id
@@ -271,9 +271,10 @@ function searchAlbumBySong($id) {
 function songDetails($id) {
     global $db;
 
-    $query = 'SELECT *
-    FROM songs, onalbum
+    $query = 'SELECT songs.id as id, songs.duration, songs.avgRating, songs.songName, albums.id as albumID, albums.albumName, albums.avgSongRating
+    FROM songs, onalbum, albums
     WHERE onalbum.songId = songs.id
+    AND onalbum.albumID = albums.id
     AND onalbum.songID = :id';
 
     $statement = $db->prepare($query);
@@ -340,6 +341,24 @@ function getTopSongs() {
     $statement->closeCursor();
     return $result;
 }
+
+function getArtistsBySong($id) {
+    global $db;
+
+    $query = 'SELECT artists.*
+    FROM artists, songs, songreleasedby
+    WHERE artists.id = songreleasedby.artistID
+    AND songs.id = songreleasedby.songID
+    AND songs.id = :id';
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result;
+}
+
 // ================================================== ADD ==================================================
 
 // Add rating given ratingID, songID, userID, and rating information

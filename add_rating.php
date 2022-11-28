@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_POST['general'], 
                 $_POST['description']
             );
-        } else if ($_POST['btnAction'] == 'Select') {
+        } else if ($_POST['btnAction'] == 'Select' || $_POST['btnAction'] == 'Add Rating') {
             $selected_song = intval($_POST["selected_song"]);
         }
     }
@@ -105,16 +105,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <td><?php echo $song['songName']; ?></td>
                 <td><?php echo $song['artistName']; ?></td>        
                 <td><?php echo $song['avgRating']; ?></td>
+                <td>
+                    <form action="song_details.php" method="post">
+                        <input type="submit" value="Details" name="btnAction" class="btn btn-primary" 
+                            title="Click to See Song Details" />
+                        <input type="hidden" name="selected_song" 
+                            value="<?php echo $song['id']; ?>"
+                        />                
+                    </form>
+                </td>
                 <?php if (isset($_SESSION['user'])): ?>
-                    <td>
-                        <form action="song_details.php" method="post">
-                            <input type="submit" value="Details" name="btnAction" class="btn btn-primary" 
-                                title="Click to See Song Details" />
-                            <input type="hidden" name="selected_song" 
-                                value="<?php echo $song['id']; ?>"
-                            />                
-                        </form>
-                    </td>
                     <td>
                         <form action="add_rating.php" method="post">
                             <input type="submit" value="Select" name="btnAction" class="btn btn-primary" 

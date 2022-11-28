@@ -99,17 +99,15 @@ $top_songs = getTopSongs();
       <td><?php echo $song['avgRating']; ?></td>        
       <td><?php echo $song['duration']; ?></td>
       <td><?php echo $song['artist']; ?></td>
-      <?php if (isset($_SESSION['user'])): ?>
-        <td>
-          <form action="song_details.php" method="post">
-            <input type="submit" value="Details" name="btnAction" class="btn btn-primary" 
-                  title="Click to See Song Details" />
-            <input type="hidden" name="selected_song" 
-                  value="<?php echo $song['id']; ?>"
-            />                
-          </form>
-        </td>
-      <?php endif; ?>               
+      <td>
+        <form action="song_details.php" method="post">
+          <input type="submit" value="Details" name="btnAction" class="btn btn-primary" 
+                title="Click to See Song Details" />
+          <input type="hidden" name="selected_song" 
+                value="<?php echo $song['id']; ?>"
+          />                
+        </form>
+      </td>
     </tr>
   <?php endforeach; ?>
 </table>
