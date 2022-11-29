@@ -180,7 +180,7 @@ function searchAlbumByNameAndArtist($album, $artist) {
 function displayRatings($id) {
     global $db;
 
-    $query = 'SELECT ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.description, idtousername.userName, ratings.generalRating, idtousername.id
+    $query = 'SELECT ratings.rhythm, ratings.melody, ratings.atmosphere, ratings.description, idtousername.userName, ratings.generalRating, idtousername.id, ratings.ID as rid
 	FROM ratings, rated, submits, idtousername
 	WHERE rated.ratingID = ratings.ID 
     AND rated.songID = :id
@@ -230,6 +230,26 @@ function getArtistsAvgRating() {
     $result = $statement->fetchAll();
     $statement->closeCursor();
     return $result;
+}
+
+// Get average song rating for each artist
+function getArtistAvgRating($id) {
+    global $db;
+
+    $query = 'SELECT artists.id, AVG(songs.avgRating) AS a
+    FROM artists, songreleasedby, songs
+    WHERE songreleasedby.artistID = artists.id
+    AND songreleasedby.songID = songs.id
+    AND songs.avgRating >= 0
+    GROUP BY artists.id
+    HAVING artists.id = :id';
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    $result = $statement->fetchAll();
+    $statement->closeCursor();
+    return $result[0]["a"];
 }
 
 // Get average song rating for each album

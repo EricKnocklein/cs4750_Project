@@ -18,14 +18,17 @@ include("db-func.php");
    <?php include('header.php') ?> 
   
   <div class="container">
-    <h1>Welcome to CS4640 Survey</h1>
+    <h1>Welcome to Tune Rater! Please Create Your Account</h1>
     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
       User Name: <input type="text" name="username" class="form-control" required /> <br/>
       Email: <input type="text" name="email" class="form-control" autofocus required /> <br/>
       Password (Please do not reuse passwords!): <input type="password" name="pwd1" class="form-control" required /> <br/>
       Retype Password: <input type="password" name="pwd2" class="form-control" required /> <br/>
-      <input type="submit" value="Sign in" class="btn btn-light"  />   
+      <input type="submit" value="Sign in" class="btn btn-primary"  />   
     </form>
+    <br/>
+    <h3>Already Have an Account?</h3>
+    <a href='login.php'>Log In</a>
   </div>
 
 
@@ -57,12 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['email']) > 0){
       if ($_POST['pwd1'] == $_POST['pwd2']) {
          $pwd = trim($_POST['pwd1']);
          $hash_pwd = md5($pwd);
-         echo "here   ";
          addUser($_POST['username'], $email, $hash_pwd);
-         echo "    here2    ";
          $_SESSION['user'] = getId($email);
          $_SESSION['pwd'] = $hash_pwd;
-         // header('Location: home.php');
+         header('Location: home.php');
       }
    }
 }

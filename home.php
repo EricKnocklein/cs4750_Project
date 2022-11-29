@@ -89,6 +89,7 @@ $top_songs = getTopSongs();
     <th>Average Rating</th>        
     <th>Duration (Sec)</th>
     <th>Artist</th>
+    <th></th>
     <?php if (isset($_SESSION['user'])): ?>
       <th></th>
     <?php endif; ?>

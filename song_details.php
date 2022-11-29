@@ -3,7 +3,7 @@ require("connect-db.php");
 require("db-func.php");
 
 //put variables we need here 
-$songID = null; // temp
+$songID = null;
 $avgRating = getSongAvgRating($songID);
 $songDetail = songDetails($songID);
 $list_of_ratings = displayRatings($songID);
@@ -47,14 +47,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <b>Duration in Seconds: </b><?php echo $songDetail["duration"];?><br/>
   <b>Average Song Rating: </b><?php echo $songDetail["avgRating"];?><br/>
   <b>Album: </b><?php echo $songDetail["albumName"];?><br/>
-  <b>Average Rating for Songs on the Album: </b><?php echo getAlbumAvgRating($songDetail["albumID"]);?><br/>
+  <b>Average Rating for Songs on the Album: </b><?php echo getAlbumAvgRating($songDetail["albumID"]);?><br/><br/>
   <form action="album_details.php" method="post">
     <input type="submit" value="View Album" name="btnAction" class="btn btn-primary" 
         title="View Album" />
     <input type="hidden" name="selected_album" 
         value="<?php echo $songDetail["albumID"]; ?>"
     />                
-  </form> 
+  </form>
+  </div>
+  <br/><h2>Artists</h2>
+  <div class="container">
   <table class="table">
     <tr>
       <th>Artist</th>
@@ -68,21 +71,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php endforeach; ?>
   </table>
 </div>
-<form action="add_rating.php" method="post">
-  <input type="submit" value="Add Rating" name="btnAction" class="btn btn-primary" 
-      title="Select a Song to Rate" />
-  <input type="hidden" name="selected_song" 
-      value="<?php echo $songID; ?>"
-  />                
-</form>
-<h2>Ratings</h2>
+<br/><h2>Ratings</h2>
+<div class="container">
+<br/>
+<?php if (isset($_SESSION['user'])): ?>
+  <form action="add_rating.php" method="post">
+    <input type="submit" value="Add Rating" name="btnAction" class="btn btn-primary" 
+        title="Select a Song to Rate" />
+    <input type="hidden" name="selected_song" 
+        value="<?php echo $songID; ?>"
+    />                
+  </form>
+  <br/>
+<?php endif; ?>
 <table class="table">
   <tr>
     <th>Username</th>
     <th>Rhythm</th>        
     <th>Melody</th>
     <th>Atmosphere</th>  
-    <th>General Rating</th>  
+    <th>General Rating</th> 
+    <th></th> 
   </tr>
   <?php foreach ($list_of_ratings as $rating): ?>
     <tr>
@@ -103,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           <input type="submit" value="<?php echo $text;?>" name="btnAction" class="btn btn-primary" 
                 title="Click to See Rating Details" />
           <input type="hidden" name="selected_rating" 
-                value="<?php echo $rating['id']; ?>"
+                value="<?php echo $rating['rid']; ?>"
           />                
         </form>   
       </td>

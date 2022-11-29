@@ -22,8 +22,9 @@ require("db-func.php");
     <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
       Email: <input type="text" name="email" class="form-control" autofocus required /> <br/>
       Password: <input type="password" name="pwd" class="form-control" required /> <br/>
-      <input type="submit" value="Sign in" class="btn btn-light"  />   
+      <input type="submit" value="Sign in" class="btn btn-primary"  />   
     </form>
+    <br/>
     <h3>Don't Have an Account?</h3>
     <a href='create-account.php'>Create Account</a>
   </div>
@@ -35,11 +36,6 @@ require("db-func.php");
 ?>
 
 <?php
-// Define a function to handle failed validation attempts 
-function reject($entry) {
-//    echo 'Please <a href="login.php">Log in </a>';
-   exit();    // exit the current script, no value is returned
-}
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['email']) > 0){
    $email = trim($_POST['email']);
@@ -47,8 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && strlen($_POST['email']) > 0){
    if (isset($_POST['pwd'])) {
       $pwd = trim($_POST['pwd']);
       $hash_pwd = md5(md5($pwd));
-      echo $setPwd;
-      echo $hash_pwd;
       if (strcmp($setPwd, $hash_pwd) == 0) {
          $_SESSION['user'] = getId($email);
          $_SESSION['pwd'] = $hash_pwd;

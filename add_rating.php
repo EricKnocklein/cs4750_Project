@@ -53,33 +53,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php include('header.php') ?> 
 
 <div class="container">
-    <?php if ($selected_song != null): ?>
+    <?php if ($selected_song != null && isset($_SESSION['user'])): ?>
         <h1>Add a Rating for <b><?php echo songDetails($selected_song)["songName"];?></b></h1>
         <form name="AddRatingForm" action="add_rating.php" method="post">
             <div class="row mb-3 mx-3">
                 <input type="hidden" class="form-control" name="songid" required 
                     value="<?php if ($selected_song!=null) echo $selected_song ?>"
+                    min=0 max=10
                 />            
             </div>
             <div class="row mb-3 mx-3">
                 Rhythm:
-                <input type="number" class="form-control" name="rhythm" required/>            
+                <input type="number" class="form-control" name="rhythm" required
+                    min=0 max=10
+                />            
             </div>
             <div class="row mb-3 mx-3">
                 Melody:
-                <input type="number" class="form-control" name="melody" required/>            
+                <input type="number" class="form-control" name="melody" required
+                    min=0 max=10
+                />            
             </div>
             <div class="row mb-3 mx-3">
                 Atmosphere:
-                <input type="number" class="form-control" name="atmosphere" required/>            
+                <input type="number" class="form-control" name="atmosphere" required
+                    min=0 max=10
+                />            
             </div>
             <div class="row mb-3 mx-3">
                 General:
-                <input type="number" class="form-control" name="general" required/>            
+                <input type="number" class="form-control" name="general" required
+                    min=0 max=10
+                />            
             </div>
             <div class="row mb-3 mx-3">
                 Description:
-                <input type="text" class="form-control" name="description" required/>            
+                <input type="text" class="form-control" name="description" />            
             </div>
             <div>
                 <input type="submit" value="Add" name="btnAction" class="btn btn-dark" 

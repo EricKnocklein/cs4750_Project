@@ -46,11 +46,15 @@ $songs = getSongsByAlbum($albumID);
 <h2>Details</h2>
 <div class="container">
   <b>Average Song Rating: </b><?php echo $avgRating;?><br/>
+</div>
+<h2>Songs</h2>
+<div class="container">
   <table class="table">
     <tr>
       <th>Song</th>
       <th>Duration</th>
       <th>Average Rating</th>
+      <th></th>
     </tr>
     <?php foreach ($songs as $song): ?>
       <tr>
@@ -69,6 +73,9 @@ $songs = getSongsByAlbum($albumID);
       </tr>
     <?php endforeach; ?>
   </table>
+  </div>
+<h2>Artists</h2>
+<div class="container">
   <table class="table">
     <tr>
       <th>Artist</th>
@@ -77,7 +84,7 @@ $songs = getSongsByAlbum($albumID);
     <?php foreach ($artists as $artist): ?>
       <tr>
         <td><?php echo $artist['artistName']; ?></td>
-        <td><?php echo $artist['avgSongRating']; ?></td>                       
+        <td><?php echo getArtistAvgRating($artist['id']); ?></td>                       
       </tr>
     <?php endforeach; ?>
   </table>

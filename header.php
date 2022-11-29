@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark bg-light">
+  <nav class="navbar navbar-expand-md navbar-dark bg-light px-4">
     <?php 
       if (isset($_SESSION['user'])) {
         echo "<div class='nav-item'>You are logged in as " . getUserData($_SESSION['user'])[0]["userName"] . "</div>";

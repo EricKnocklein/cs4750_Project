@@ -55,38 +55,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="row mb-3 mx-3">
                 <input type="hidden" class="form-control" name="songid" required 
                     value="<?php if ($song["id"]!=null) echo $song["id"] ?>"
+                    min=0 max=10
                 />
                 <input type="hidden" class="form-control" name="ratingid" required 
                     value="<?php echo $ratingID ?>"
+                    min=0 max=10
                 />           
             </div>
             <div class="row mb-3 mx-3">
                 Rhythm:
                 <input type="number" class="form-control" name="rhythm" required 
                     value="<?php echo $ratingDetails["rhythm"] ?>"
+                    min=0 max=10
                 />            
             </div>
             <div class="row mb-3 mx-3">
                 Melody:
                 <input type="number" class="form-control" name="melody" required
                     value="<?php echo $ratingDetails["melody"] ?>"
+                    min=0 max=10
                 />            
             </div>
             <div class="row mb-3 mx-3">
                 Atmosphere:
                 <input type="number" class="form-control" name="atmosphere" required
                     value="<?php echo $ratingDetails["atmosphere"] ?>"
+                    min=0 max=10
                 />            
             </div>
             <div class="row mb-3 mx-3">
                 General:
                 <input type="number" class="form-control" name="general" required
                     value="<?php echo $ratingDetails["generalRating"] ?>"
+                    min=0 max=10
                 />            
             </div>
             <div class="row mb-3 mx-3">
                 Description:
-                <input type="text" class="form-control" name="description" required
+                <input type="text" class="form-control" name="description"
                     value="<?php echo $ratingDetails["description"] ?>"
                 />            
             </div>
@@ -103,14 +109,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php endif; ?>
     <?php if (!isset($_SESSION['user']) || $_SESSION['user'] != $ratingDetails["id"]): ?>
         <h1>Rating by <b><?php echo $ratingDetails["userName"]?></b></h1>
-        <b>Song: </b><?php echo $song["songName"]?><br/>
-        <b>Album: </b><?php echo $song["albumName"]?><br/>
-        <b>General Rating: </b><?php echo $ratingDetails["generalRating"]?><br/>
-        <b>Atmosphere: </b><?php echo $ratingDetails["atmosphere"]?><br/>
-        <b>Melody: </b><?php echo $ratingDetails["melody"]?><br/>
-        <b>Rhythm: </b><?php echo $ratingDetails["rhythm"]?><br/>
-        <b>Description:</b></br>
-        <p><?php echo $ratingDetails["description"]?></p></br>
+        <h2>Song Information</h2>
+        <div class="container">
+            <b>Song: </b><?php echo $song["songName"]?><br/>
+            <b>Album: </b><?php echo $song["albumName"]?><br/>
+        </div>
+        <h2>Rating</h2>
+        <div class="container">
+            <b>General Rating: </b><?php echo $ratingDetails["generalRating"]?><br/>
+            <b>Atmosphere: </b><?php echo $ratingDetails["atmosphere"]?><br/>
+            <b>Melody: </b><?php echo $ratingDetails["melody"]?><br/>
+            <b>Rhythm: </b><?php echo $ratingDetails["rhythm"]?><br/>
+            <b>Description:</b></br>
+            <p><?php echo $ratingDetails["description"]?></p></br>
+        </div>
     <?php endif; ?>
 
 </div>
